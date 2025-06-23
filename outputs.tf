@@ -20,13 +20,11 @@ output "tags" {
 output "instance_ip" {
   value       = aws_lightsail_instance.instance[*].public_ip_address
   description = "The Public IP Address name of the Lightsail instance."
-
 }
 
 output "instance_name" {
   value       = aws_lightsail_instance.instance[*].name
   description = "The name of the Lightsail instance."
-
 }
 
 output "ssh_host_public_key" {

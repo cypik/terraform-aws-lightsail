@@ -19,11 +19,12 @@ To use this module, you should have Terraform installed and configured for AWS. 
 ```hcl
 module "lightsail" {
   source      = "cypik/lightsail/aws"
+  version     = "1.0.2"
   environment = "test"
   name        = "lightsail"
   label_order = ["name", "environment"]
 
-  public_key           = "sshJXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXbnzTZTAZjA6mtjK/BTcoU0ElzHYU= satish@satish"
+  public_key           = "sshJXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXbnzTZTAZjA6mtjK/BTcoU0ElzHYU="
   use_default_key_pair = true
   user_data            = file("${path.module}/lightsail.sh")
 
@@ -57,20 +58,20 @@ Replace **MIT** and **Cypik** with the appropriate license and your information.
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.6.6 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 5.32.1 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.9.5 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.82.2 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 5.32.1 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 5.82.2 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_labels"></a> [labels](#module\_labels) | cypik/labels/aws | 1.0.1 |
+| <a name="module_labels"></a> [labels](#module\_labels) | cypik/labels/aws | 1.0.2 |
 
 ## Resources
 
@@ -87,9 +88,13 @@ Replace **MIT** and **Cypik** with the appropriate license and your information.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_add_on_enabled"></a> [add\_on\_enabled](#input\_add\_on\_enabled) | Enable or disable the add-on for the Lightsail instance. | `bool` | `false` | no |
+| <a name="input_add_on_snapshot_time"></a> [add\_on\_snapshot\_time](#input\_add\_on\_snapshot\_time) | The time in UTC when the automatic snapshot will be created (HH:00 format). | `string` | `"00:00"` | no |
+| <a name="input_add_on_status"></a> [add\_on\_status](#input\_add\_on\_status) | Status of the add-on. Valid values are 'Enabled' or 'Disabled'. | `string` | `"Enabled"` | no |
+| <a name="input_add_on_type"></a> [add\_on\_type](#input\_add\_on\_type) | Type of the add-on for the Lightsail instance. Currently, only 'AutoSnapshot' is valid. | `string` | `"AutoSnapshot"` | no |
 | <a name="input_attributes"></a> [attributes](#input\_attributes) | Additional attributes (e.g. `1`). | `list(any)` | `[]` | no |
-| <a name="input_availability_zone"></a> [availability\_zone](#input\_availability\_zone) | The Availability Zone in which to create your instance | `string` | `"us-east-1a"` | no |
-| <a name="input_blueprint_id"></a> [blueprint\_id](#input\_blueprint\_id) | The ID for a virtual private server image | `string` | `"ubuntu_20_04"` | no |
+| <a name="input_availability_zone"></a> [availability\_zone](#input\_availability\_zone) | The Availability Zone in which to create your instance | `string` | `"us-east-2a"` | no |
+| <a name="input_blueprint_id"></a> [blueprint\_id](#input\_blueprint\_id) | The ID for a virtual private server image | `string` | `"ubuntu_22_04"` | no |
 | <a name="input_bundle_id"></a> [bundle\_id](#input\_bundle\_id) | The bundle of specification information | `string` | `"nano_2_0"` | no |
 | <a name="input_create_static_ip"></a> [create\_static\_ip](#input\_create\_static\_ip) | Create and attach a statis IP to the instance | `bool` | `false` | no |
 | <a name="input_delimiter"></a> [delimiter](#input\_delimiter) | Delimiter to be used between `organization`, `environment`, `name` and `attributes`. | `string` | `"-"` | no |
@@ -100,7 +105,7 @@ Replace **MIT** and **Cypik** with the appropriate license and your information.
 | <a name="input_key_pair_name"></a> [key\_pair\_name](#input\_key\_pair\_name) | The key name to use for the instance. | `string` | `""` | no |
 | <a name="input_key_path"></a> [key\_path](#input\_key\_path) | Public key path  (e.g. `~/.ssh/id_rsa.pub`). | `string` | `""` | no |
 | <a name="input_label_order"></a> [label\_order](#input\_label\_order) | Label order, e.g. `name`,`application`. | `list(any)` | <pre>[<br>  "name",<br>  "environment"<br>]</pre> | no |
-| <a name="input_managedby"></a> [managedby](#input\_managedby) | ManagedBy, eg 'cypik'. | `string` | `"cypik"` | no |
+| <a name="input_managedby"></a> [managedby](#input\_managedby) | ManagedBy, eg 'info@cypik.com'. | `string` | `"info@cypik.com"` | no |
 | <a name="input_name"></a> [name](#input\_name) | Name  (e.g. `app` or `cluster`). | `string` | `""` | no |
 | <a name="input_pgp_key"></a> [pgp\_key](#input\_pgp\_key) | Flag to control the instance creation. | `string` | `""` | no |
 | <a name="input_port_info"></a> [port\_info](#input\_port\_info) | n/a | <pre>list(object({<br>    protocol = string<br>    port     = number<br>    cidrs    = list(string)<br>  }))</pre> | `null` | no |

@@ -13,3 +13,7 @@ output "instance_ip" {
 output "instance_name" {
   value = module.lightsail.instance_name
 }
+
+output "ssh_host_public_key" {
+  value = module.lightsail.ssh_host_public_key
+}

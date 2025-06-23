@@ -2,7 +2,7 @@
 
 module "labels" {
   source      = "cypik/labels/aws"
-  version     = "1.0.1"
+  version     = "1.0.2"
   name        = var.name
   repository  = var.repository
   environment = var.environment
@@ -12,21 +12,30 @@ module "labels" {
 }
 
 resource "aws_lightsail_instance" "instance" {
-  count             = var.instance_enabled ? var.instance_count : 0
-  name              = format("%s%s%s", module.labels.id, "-", (count.index))
+  count             = var.instance_enabled ? var.instance_count : 1
+  name              = format("%s%s%s", module.labels.id, var.delimiter, count.index)
   availability_zone = var.availability_zone
   blueprint_id      = var.blueprint_id
   bundle_id         = var.bundle_id
   key_pair_name     = var.key_pair_name == "" && var.use_default_key_pair == false ? "${module.labels.id}-keypair" : var.key_pair_name
   depends_on        = [aws_lightsail_key_pair.instance]
   user_data         = var.user_data
+
   tags = merge(
     module.labels.tags,
     {
-
-      "Name" = format("%s%s%s", module.labels.id, var.delimiter, (count.index))
+      "Name" = format("%s%s%s", module.labels.id, var.delimiter, count.index)
     }
   )
+
+  dynamic "add_on" {
+    for_each = var.add_on_enabled ? [1] : []
+    content {
+      type          = var.add_on_type
+      snapshot_time = var.add_on_snapshot_time
+      status        = var.add_on_status
+    }
+  }
 }
 
 resource "aws_lightsail_instance_public_ports" "public" {
@@ -46,13 +55,13 @@ resource "aws_lightsail_instance_public_ports" "public" {
 }
 
 resource "aws_lightsail_static_ip_attachment" "instance" {
-  count          = var.instance_enabled && var.create_static_ip ? var.instance_count : 0
+  count          = var.instance_enabled && var.create_static_ip ? var.instance_count : 1
   static_ip_name = aws_lightsail_static_ip.instance[count.index].id
   instance_name  = aws_lightsail_instance.instance[count.index].id
 }
 
 resource "aws_lightsail_static_ip" "instance" {
-  count = var.instance_enabled && var.create_static_ip ? var.instance_count : 0
+  count = var.instance_enabled && var.create_static_ip ? var.instance_count : 1
   name  = format("%s-IP%s%s", module.labels.id, "-", (count.index))
 }
 

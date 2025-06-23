@@ -30,8 +30,8 @@ variable "name" {
 
 variable "managedby" {
   type        = string
-  default     = "cypik"
-  description = "ManagedBy, eg 'cypik'."
+  default     = "info@cypik.com"
+  description = "ManagedBy, eg 'info@cypik.com'."
 }
 
 variable "attributes" {
@@ -42,14 +42,14 @@ variable "attributes" {
 
 variable "availability_zone" {
   type        = string
-  default     = "us-east-1a"
+  default     = "us-east-2a"
   description = "The Availability Zone in which to create your instance"
   sensitive   = true
 }
 
 variable "blueprint_id" {
   type        = string
-  default     = "ubuntu_20_04"
+  default     = "ubuntu_22_04"
   description = "The ID for a virtual private server image"
   sensitive   = true
 }
@@ -134,4 +134,28 @@ variable "user_data" {
   description = " Single lined launch script as a string to configure server with additional user data."
 }
 
+# Add-On Configuration
+variable "add_on_enabled" {
+  type        = bool
+  default     = false
+  description = "Enable or disable the add-on for the Lightsail instance."
+}
+
+variable "add_on_type" {
+  type        = string
+  default     = "AutoSnapshot"
+  description = "Type of the add-on for the Lightsail instance. Currently, only 'AutoSnapshot' is valid."
+}
+
+variable "add_on_snapshot_time" {
+  type        = string
+  default     = "00:00"
+  description = "The time in UTC when the automatic snapshot will be created (HH:00 format)."
+}
+
+variable "add_on_status" {
+  type        = string
+  default     = "Enabled"
+  description = "Status of the add-on. Valid values are 'Enabled' or 'Disabled'."
+}
 
