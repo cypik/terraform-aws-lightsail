@@ -15,5 +15,6 @@ output "instance_name" {
 }
 
 output "ssh_host_public_key" {
-  value = module.lightsail.ssh_host_public_key
+  value     = module.lightsail.ssh_host_public_key
+  sensitive = true
 }
